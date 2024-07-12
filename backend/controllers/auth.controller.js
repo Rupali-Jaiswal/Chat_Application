@@ -37,7 +37,7 @@ export const signup = async (req, res) => {
 			// Generate JWT token here
 			generateTokenAndSetCookie(newUser._id, res);
 			await newUser.save();
-
+			console.log("you account has been created")
 			res.status(201).json({
 				_id: newUser._id,
 				fullName: newUser.fullName,
@@ -64,7 +64,7 @@ export const login = async (req, res) => {
 		}
 
 		generateTokenAndSetCookie(user._id, res);
-
+		console.log("you are logged in")
 		res.status(200).json({
 			_id: user._id,
 			fullName: user.fullName,
@@ -80,6 +80,7 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
 	try {
 		res.cookie("jwt", "", { maxAge: 0 });
+		console.log("you are logged out")
 		res.status(200).json({ message: "Logged out successfully" });
 	} catch (error) {
 		console.log("Error in logout controller", error.message);
