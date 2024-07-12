@@ -25,9 +25,9 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			default: "",
 		},
-        // friends: [{
-        //     type: Schema.ObjectId, ref:"User"
-        // }]
+        friends: [{
+            type: mongoose.Schema.ObjectId, ref:"User"
+        }]
 
 		// createdAt, updatedAt => Member since <createdAt>
 	},
