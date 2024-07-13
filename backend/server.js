@@ -6,6 +6,7 @@ import connectToMongoDB from "./db.js"
 import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import groupRoutes from "./routes/group.routes.js"
 
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
@@ -17,6 +18,7 @@ app.use(cookieParser())
 app.use('/api/auth',authRoutes)
 app.use('/api/message', messageRoutes)
 app.use('/api/user', userRoutes)
+app.use('/api/group', groupRoutes);
 
 const port=process.env.port || 5000 
 

@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
 		password: {
 			type: String,
 			required: true,
-			minlength: 6,
+			minlength: 3,
 		},
 		gender: {
 			type: String,
@@ -25,9 +25,15 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			default: "",
 		},
-        friends: [{
-            type: mongoose.Schema.ObjectId, ref:"User"
-        }]
+		friends: [{
+			type: mongoose.Schema.Types.ObjectId, 
+			ref: "User",
+		}],
+		groups: [{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Group",
+		}]
+		// Add this to your existing User model
 
 		// createdAt, updatedAt => Member since <createdAt>
 	},
