@@ -1,8 +1,15 @@
 import express from "express";
 import { createGroup, getGroupById, addMemberToGroup, removeMemberFromGroup, sendGroupMessage, getGroupMessages ,getAllGroup} from "../controllers/group.controller.js";
 import protectRoute from "../middleware/protectRoute.js";
+import cors from "cors"
+
 
 const router = express.Router();
+router.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  }));
+
 
 router.post("/create", protectRoute, createGroup);
 router.get("/get/:id", protectRoute, getGroupById);
