@@ -2,25 +2,34 @@ import mongoose from "mongoose";
 
 const groupSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
+    groupName: { 
+      type: String, 
+      required: true, 
       unique: true,
+      trim: true,
+      validate: {
+        validator: function(v) {
+          return v.length > 0;
+        },
+        message: props => `${props.value} is not a valid group name!`
+      }
     },
-    description: {
+    groupDescription: {
       type: String,
-      default: "",
+    },
+    groupImage: {
+      type: String,
     },
     admin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    members: [
+    groupMembers: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        default:[]
+        default: []
       },
     ],
     messages: [

@@ -4,25 +4,56 @@ import User from "../models/user.model.js"
 
 export const createGroup = async (req, res) => {
     try {
-        const { name, description } = req.body
-        const adminID = req.user._id
-        const exits = await Group.findOne({ name })
-        if (exits) {
-            return res.status(400).json({ message: "Group with this name already exists" })
+        const { groupName, groupDescription, groupImage, groupMembers } = req.body
+        if (!groupName || typeof groupName !== 'string' || groupName.trim() === '' || !groupDescription || !groupImage) {
+            return res.status(400).json({ message: "Please provide all required fields" });
         }
+
+        const trimmedGroupName = groupName.trim();
+
+        const adminID = req.user._id
         const admin = await User.findById(adminID)
         if (!admin) {
             return res.status(404).json({ message: "Admin not found" })
         }
-        const newGroup = new Group({ name, description, admin })
-        newGroup.members.push(adminID)
+        const exits = await Group.findOne({ groupName })
+        if (exits) {
+            return res.status(400).json({ message: "Group with this name already exists" })
+        }
+
+        const newGroup = await Group.create({ 
+            groupName: trimmedGroupName, 
+            groupDescription, 
+            groupImage, 
+            admin,
+            groupMembers: [...groupMembers, admin._id]
+        });
+
+        if (!newGroup) {
+            return res.status(400).json({ message: "Group not created" })
+        }
+        await newGroup.save() 
+
+        await Promise.all(
+            groupMembers.map(async (member) => {
+                await User.findByIdAndUpdate(member, { $push: { groups: newGroup._id } })
+            }),
+            await User.findByIdAndUpdate(admin._id, { $push: { groups: newGroup._id } })
+        )
+
         await newGroup.save()
-        await User.findByIdAndUpdate(admin, { $push: { groups: newGroup._id } })
 
         res.status(200).json({ message: "Group created successfully", group: newGroup })
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ message: "Failed to create group" })
+        
+    }catch (error) {
+        console.error("Error creating group:", error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: "Invalid input", error: error.message });
+        }
+        if (error.code === 11000) {
+            return res.status(400).json({ message: "Group with this name already exists" });
+        }
+        res.status(500).json({ message: "Failed to create group", error: error.message });
     }
 }
 
@@ -40,13 +71,15 @@ export const getGroupById = async (req, res) => {
         res.status(500).json({ error: "Failed to get group" });
     }
 }
+
+
 export const getAllGroup = async (req, res) => {
     try {
         // Assuming req.user contains the authenticated user's information
         const userId = req.user._id;
 
         // Find the user and populate the groups field
-        const user = await User.findById(userId).populate('groups', 'name description messages');
+        const user = await User.findById(userId).populate('groups', '_id groupName groupDescription groupImage messages');
 
         if (!user) {
             return res.status(404).json({ error: "User not found" });
@@ -55,10 +88,9 @@ export const getAllGroup = async (req, res) => {
         if (!user.groups || user.groups.length === 0) {
             return res.status(200).json({ message: "User is not a member of any groups", groups: [] });
         }
-
         res.status(200).json({ groups: user.groups });
     } catch (error) {
-        console.error("Error in getAllGroup:", error);
+        console.error("Error in getAllGroup endpoint:", error);
         res.status(500).json({ error: "Failed to get groups" });
     }
 };
@@ -67,7 +99,7 @@ export const getAllGroup = async (req, res) => {
 export const addMemberToGroup = async (req, res) => {
     try {
         const memberId = req.body.id
-        const {id: groupId }= req.params
+        const { id: groupId } = req.params
         const group = await Group.findById(groupId)
         if (!group) {
             return res.status(404).json({ error: "Group not found" });
@@ -93,7 +125,7 @@ export const addMemberToGroup = async (req, res) => {
 export const removeMemberFromGroup = async (req, res) => {
     try {
         const memberId = req.body.id
-        const{id: groupId}= req.params
+        const { id: groupId } = req.params
         const group = await Group.findById(groupId)
         if (!group) {
             return res.status(404).json({ error: "Group not found" });
@@ -108,7 +140,6 @@ export const removeMemberFromGroup = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Failed to remove member to group" });
     }
-
 }
 
 
@@ -116,7 +147,7 @@ export const sendGroupMessage = async (req, res) => {
     try {
         const { message } = req.body
         const sender = req.user._id
-        const {id:groupId} = req.params
+        const { id: groupId } = req.params
         const group = await Group.findById(groupId)
         if (!group) {
             return res.status(404).json({ error: "Group not found" });
@@ -139,7 +170,7 @@ export const sendGroupMessage = async (req, res) => {
 
 export const getGroupMessages = async (req, res) => {
     try {
-        const {id:groupId }= req.params
+        const { id: groupId } = req.params
         const group = await Group.findById(groupId).populate("messages")
         if (!group) {
             return res.status(404).json({ error: "Group not found" });

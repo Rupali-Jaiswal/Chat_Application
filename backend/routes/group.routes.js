@@ -11,9 +11,9 @@ router.use(cors({
   }));
 
 
-router.post("/create", protectRoute, createGroup);
-router.get("/get/:id", protectRoute, getGroupById);
-router.get("/get", protectRoute, getAllGroup);
+router.post("/createGroup", protectRoute, createGroup);
+router.get("/getGroup/:id", protectRoute, getGroupById);
+router.get("/getAllGroup", protectRoute, getAllGroup);
 router.post("/:id/add-member", protectRoute, addMemberToGroup);
 router.post("/:id/remove-member", protectRoute, removeMemberFromGroup);
 router.post("/:id/send-message", protectRoute, sendGroupMessage);

@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema(
 		},
 		profilePic: {
 			type: String,
-			default: "",
 		},
 		friends: [{
 			type: mongoose.Schema.Types.ObjectId, 
@@ -33,9 +32,6 @@ const userSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Group",
 		}]
-		// Add this to your existing User model
-
-		// createdAt, updatedAt => Member since <createdAt>
 	},
 	{ timestamps: true }
 );

@@ -22,8 +22,8 @@ export const signup = async (req, res) => {
 
 		// https://avatar-placeholder.iran.liara.run/
 
-		const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-		const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+		const boyProfilePic = "https://cdn3.iconfinder.com/data/icons/avatars-flat/33/man_5-1024.png";
+		const girlProfilePic = "https://th.bing.com/th/id/R.5a99c620f8f50ca006a3e08feb8ce74f?rik=gDqLvWeUtSVSyg&riu=http%3a%2f%2fassets.stickpng.com%2fimages%2f585e4bc4cb11b227491c3395.png&ehk=SFIMd%2fFUuS7CaXugdWIY8YWjotS4J81PE25u7JiN0jQ%3d&risl=&pid=ImgRaw&r=0";
 
 		const newUser = new User({
 			fullName,

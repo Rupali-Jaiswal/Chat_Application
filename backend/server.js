@@ -15,7 +15,8 @@ import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 dotenv.config();
 
-app.use(express.json()); // to parse the incoming requests with JSON payloads (from req.body)
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true })); // to parse the incoming requests with JSON payloads (from req.body)
 app.use(cookieParser())
 
 const __dirname = path.resolve();
