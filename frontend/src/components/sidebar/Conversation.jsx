@@ -1,9 +1,11 @@
 import { useSocketContext } from "../../context/SocketContext";
 import useConversation from "../../zustand/useConversation";
 import { MdDelete } from "react-icons/md";
+import useGroupConv from "../../zustand/useGroupConv";
 
 const Conversation = ({ conversation, lastIdx }) => {
 	const { selectedConversation, setSelectedConversation } = useConversation();
+    const { selectedGroup, setSelectedGroup } = useGroupConv()
 
 	const isSelected = selectedConversation?._id === conversation._id;
 	const { onlineUsers } = useSocketContext();
@@ -13,7 +15,9 @@ const Conversation = ({ conversation, lastIdx }) => {
 		<>
 			<div className={`flex gap-2 items-center hover:bg-sky-500 rounded py-1.5 cursor-pointer
 				${isSelected ? "bg-sky-500" : ""}
-			`} onClick={() => setSelectedConversation(conversation)}
+			`} onClick={() => {setSelectedConversation(conversation)
+				setSelectedGroup(null)
+			}}
 			><div className={`avatar ${isOnline ? "online" : ""}`}>
 					<div className='w-10 rounded-full'>
 						<img src={conversation.profilePic}  />

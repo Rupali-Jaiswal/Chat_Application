@@ -22,7 +22,7 @@ const Sidebar = () => {
 
 	return (
 		<div>
-			<div className=' border-r border-slate-500 py-4 pl-4 pr-1 flex flex-col' style={{height:"100%", width:"100%"}}>
+			<div className=' border-r border-slate-500 p-4 flex flex-col' style={{height:"100%", width:"100%"}}>
 				<Topsection />
 				<SearchInput />
 				<div className="flex flex-row">

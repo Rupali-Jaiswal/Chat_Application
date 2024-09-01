@@ -135,11 +135,11 @@ export default function Addmember() {
             </div>
             <div className="m-1">
               <button
-                className="btn btn-sm btn-primary px-5 mr-1.5 ml-2" style={{ width: "45%" }}
+                className="btn btn-sm bg-sky-500 text-black px-5 mr-1.5 ml-2" style={{ width: "45%" }}
                 onClick={handleNext}
               >Next</button>
               <button
-                className="btn btn-sm btn-primary px-5"
+                className="btn btn-sm bg-sky-500 text-black px-5"
                 onClick={handleCancle} style={{ width: "45%" }}
               >Cancle</button>
             </div>

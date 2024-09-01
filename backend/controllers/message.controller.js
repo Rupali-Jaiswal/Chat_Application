@@ -29,9 +29,7 @@ export const sendMessage = async (req, res) => {
 
     // this will run in parallel
     await Promise.all([conversation.save(), newMessage.save()]);
-	res.status(201).json(newMessage);
-
-
+	res.status(201).json(newMessage);    
    } catch (error) {
     console.log("Error in sendMessage controller: ", error.message);
 	res.status(500).json({ error: "Internal server error" });

@@ -12,7 +12,7 @@ router.use(cors({
 
 router.get("/get", protectRoute, getAllUsers);
 router.get("/get/:id", protectRoute,getUserById);
-router.patch("/addfriend/:id", protectRoute,addFriend);
+router.post("/addFriend", protectRoute,addFriend);
 router.delete("/deletefriend/:id", protectRoute,deleteFriend);
 
 export default router;

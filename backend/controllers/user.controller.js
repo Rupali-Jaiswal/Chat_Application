@@ -32,8 +32,8 @@ export const addFriend = async (req, res) => {
     let username = req.body.username;
 
      try {
-		const {id:loddedINuserID}=req.params
-        let loggedInUser = await User.findById(loddedINuserID).populate('friends', '_id username');
+		const loggedINuserID=req.user._id
+        let loggedInUser = await User.findById(loggedINuserID).populate('friends', '_id username');
         const user = await User.findOne({ $or: [{ fullName: username }, { username: username }] }).populate('friends', '_id username');
 		if (!user) {
 			return res.status(404).json({ message: 'User with this name not found' });
