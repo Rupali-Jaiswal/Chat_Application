@@ -60,7 +60,7 @@ Follow these steps to run the application locally:
 
 ![SignUp Page](frontend/src/images/screenshot_localhost%20(1).png)
 
-![Login Page](frontend/src/images/screenshot_localhost(3).png)
+![Login Page](frontend/src/images/screenshot_localhost.png)
 
 ![Home Page1](frontend/src/images/screenshot_localhost%20(3).png)
 
